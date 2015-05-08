@@ -11,7 +11,7 @@ if (isset($_POST['type']) && is_session_active()){
     $type = sanitizeMYSQL($connection, $_POST['type']);
     
     switch($type){
-        case "search_results": //search fully works when not in switch
+        case "find_car": //search fully works when not in switch
             if(isset($_POST['search_field']) && trim($_POST['search_field']) != ""){    
                 $query = "SELECT * FROM carspecs INNER JOIN car ON carspecs.ID = car.CarSpecsID WHERE carspecs.Make LIKE '%$data%' OR Model LIKE '%$data%' OR Year LIKE '%$data%' OR Size LIKE '%$data%' OR Color LIKE '%$data%' AND car.status = 1";
                 $result = mysqli_query($connection, $query);    
@@ -34,7 +34,7 @@ if (isset($_POST['type']) && is_session_active()){
             }            
             echo $car;
             break;
-        case "returned_cars":
+        case "rental_history":
             $query ="SELECT * FROM rental WHERE rental.status = 2";
             $row_count = mysqli_num_rows($result);
             for($j = 0; $j < $row_count; ++$j){
@@ -69,6 +69,7 @@ if (isset($_POST['type']) && is_session_active()){
 function is_session_active() {
     return isset($_SESSION) && count($_SESSION) > 0 && time() < $_SESSION['start']+60*5; //check if it has been 5 minutes
 }
+
 function display_car($row){
     $car.="<div class='search_item'>";
     $car.='<img src="data:' .$row["picture_type"] . ';base64,' . base64_encode($row["picture"]) . '">';
