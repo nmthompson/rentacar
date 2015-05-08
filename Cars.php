@@ -66,7 +66,9 @@ if (isset($_POST['type']) && is_session_active()){
 //current rentals
 //return car - send rental_id
 //rent car - by id
-
+function is_session_active() {
+    return isset($_SESSION) && count($_SESSION) > 0 && time() < $_SESSION['start']+60*5; //check if it has been 5 minutes
+}
 function display_car($row){
     $car.="<div class='search_item'>";
     $car.='<img src="data:' .$row["picture_type"] . ';base64,' . base64_encode($row["picture"]) . '">';
